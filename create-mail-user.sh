@@ -1,3 +1,3 @@
 #!/bin/bash
-doit mail setup email add $1 "$2"
+docker exec -it mail setup email add $1 "$2"
 

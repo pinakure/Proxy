@@ -1,6 +1,24 @@
 services:
   #
   # ----------------------------------------------------------------------
+  # WebMail
+  # ----------------------------------------------------------------------
+  #
+  webmail-service:
+    image: roundcube/roundcubemail:latest
+    container_name: webmail
+    networks:
+      - primary-network
+      - mail-network
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://mail.iskarion.ddns.net # Nombre del servicio de tu mailserver
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.iskarion.ddns.net
+      - ROUNDCUBEMAIL_SMTP_PORT=587
+      - ROUNDCUBEMAIL_IMAP_CONN_OPTIONS='{"ssl":{"verify_peer":false,"verify_peer_name":false,"allow_self_signed":true}}'
+      - ROUNDCUBEMAIL_SMTP_CONN_OPTIONS='{"ssl":{"verify_peer":false,"verify_peer_name":false,"allow_self_signed":true}}'
+      - ROUNDCUBEMAIL_DSN=tls://mail-service:993?verify_peer=false&verify_peer_name=false&allow_self_signed=true
+  #
+  # ----------------------------------------------------------------------
   # Mail
   # ----------------------------------------------------------------------
   #
@@ -8,12 +26,15 @@ services:
     image: mailserver/docker-mailserver:latest
     container_name: mail
     hostname: mail
-    domainname: mail.iskarion.ddns.net
+    domainname: iskarion.ddns.net
+    ports:
+      - "143:143"
+      - "25:25"
+      - "587:587"
     volumes:
       - /mail/data:/var/mail
       - /mail/state:/var/mail-state
       - /mail/config:/tmp/docker-mailserver
-      #- ./certs:/tmp/ssl:ro
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
       - webroot:/var/www/certbot
@@ -25,10 +46,11 @@ services:
       - SSL_CERT_PATH=/etc/letsencrypt/live/mail.iskarion.ddns.net/fullchain.pem
       - SSL_KEY_PATH=/etc/letsencrypt/live/mail.iskarion.ddns.net/privkey.pem
     networks:
-      - sql-network
+      - primary-network
+      - mail-network
     restart: always
     extra_hosts:
-      - "mail.iskarion.ddns.net=127.0.0.1"
+      - "mail.iskarion.ddns.net:127.0.0.1"
   #
   # ----------------------------------------------------------------------
   # Database
@@ -62,6 +84,7 @@ services:
       PGADMIN_LISTEN_PORT: 8080
       VIRTUAL_PORT: 8080
     networks:
+      - primary-network
       - sql-network
     restart: unless-stopped
     depends_on:
@@ -75,6 +98,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     networks:
+      - primary-network
       - sql-network
     volumes:
       - certbot_etc:/etc/letsencrypt
@@ -95,6 +119,8 @@ services:
     image: nginx:latest
     container_name: proxy
     networks:
+      - primary-network
+      - mail-network
       - sql-network
     ports:
       - "80:80"
@@ -150,6 +176,7 @@ services:
       - /src/proxy/themes/melodify:/opt/keycloak/themes/melodify
       - /src/proxy/themes/trickynoid:/opt/keycloak/themes/trickynoid
     networks:
+      - primary-network
       - sql-network
     depends_on:
       - postgres
@@ -161,5 +188,9 @@ volumes:
   webroot:
 
 networks:
+  primary-network:
+    driver: bridge
+  mail-network:
+    driver: bridge
   sql-network:
     driver: bridge
