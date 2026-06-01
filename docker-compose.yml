@@ -10,10 +10,10 @@ services:
     hostname: mail
     domainname: mail.iskarion.ddns.net
     volumes:
-      - ./mail-data:/var/mail
-      - ./mail-state:/var/mail-state
-      - ./mail-config:/tmp/docker-mailserver
-      - ./certs:/tmp/ssl:ro
+      - /mail/data:/var/mail
+      - /mail/state:/var/mail-state
+      - /mail/config:/tmp/docker-mailserver
+      #- ./certs:/tmp/ssl:ro
       - certbot_etc:/etc/letsencrypt
       - certbot_var:/var/lib/letsencrypt
       - webroot:/var/www/certbot
