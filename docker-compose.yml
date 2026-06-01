@@ -1,0 +1,135 @@
+services:
+  #
+  # ----------------------------------------------------------------------
+  # Database
+  # ----------------------------------------------------------------------
+  #
+  postgres:
+    image: postgres:16-alpine
+    container_name: database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - sql-network
+    volumes:
+      # Postgres guarda sus datos en su ruta dedicada
+      - /data/iskarion/postgres_data:/var/lib/postgresql/data
+      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh:ro
+    restart: unless-stopped
+  #
+  # ----------------------------------------------------------------------
+  # PGAdmin
+  # ----------------------------------------------------------------------
+  #
+  pgadmin-service:
+    image: dpage/pgadmin4
+    container_name: database_admin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: 8080
+      VIRTUAL_PORT: 8080
+    networks:
+      - sql-network
+    restart: unless-stopped
+    depends_on:
+      - postgres
+  #
+  # ----------------------------------------------------------------------
+  # CertBot
+  # ----------------------------------------------------------------------
+  #
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    networks:
+      - sql-network
+    volumes:
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - webroot:/var/www/certbot
+      - ./generate-certificates.sh:/generate-certificates.sh:ro
+    #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do source /generate-certificates.sh; sleep 12h & wait $${!}; done'"
+    #
+    # Descomentar cuando los certificados ya han sido generados
+    #
+    #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done'"
+  #
+  # ----------------------------------------------------------------------
+  # Proxy
+  # ----------------------------------------------------------------------
+  #
+  nginx_proxy:
+    image: nginx:latest
+    container_name: proxy
+    networks:
+      - sql-network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /src/proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - webroot:/var/www/certbot
+      - /static:/static
+      # Each one of django projects must expose their media folder through these paths
+      - /src/melodify/web/media:/media/melodify
+      - /src/m4gtracker/web/media:/media/m4gtracker
+      - /src/scenia/web/media:/media/scenia
+      - /src/warhammer/web/media:/media/warhammer
+      - /src/trickynoid/front:/var/www/html
+      - /src/trickynoid/back:/src/trickynoid
+      - /src/trickynoid/back/media:/media/trickynoid
+      - /src/trickynoid/back/static:/static/trickynoid
+    depends_on:
+      - auth-service
+      - pgadmin-service
+  #
+  # ----------------------------------------------------------------------
+  # KeyCloak
+  # ----------------------------------------------------------------------
+  #
+  auth-service:
+    image: quay.io/keycloak/keycloak:24.0 # Versión optimizada y estable
+    container_name: authentication
+    command: start-dev # Usa 'start' con certificados SSL reales para producción
+    environment:
+      # Credenciales del Administrador de Keycloak
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      # Configuración de la Base de Datos
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/keycloak
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      # Características requeridas para producción / proxies inversos
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "true" # Cambiar a true si usas HTTPS/dominios reales
+      KC_PROXY_HEADERS: xforwarded # Necesario si usas Nginx, Traefik o Apache delante
+      KC_HOSTNAME: auth.iskarion.ddns.net  # <--- Tu dominio exacto de Keycloak
+      KC_HOSTNAME_ADMIN: auth.iskarion.ddns.net # <--- Para poder entrar a la consola de admin
+      # Estas variables pertenecen a versiones anteriores a 24 y hacen que quarkus no funcione correctamente
+    volumes:
+      - /src/proxy/themes/scenia:/opt/keycloak/themes/sso-theme
+      - /src/proxy/themes/scenia:/opt/keycloak/themes/scenia
+      - /src/proxy/themes/m4gtracker:/opt/keycloak/themes/m4gtracker
+      - /src/proxy/themes/ticketshare:/opt/keycloak/themes/ticketshare
+      - /src/proxy/themes/melodify:/opt/keycloak/themes/melodify
+      - /src/proxy/themes/trickynoid:/opt/keycloak/themes/trickynoid
+    networks:
+      - sql-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  certbot_etc:
+  certbot_var:
+  webroot:
+
+networks:
+  sql-network:
+    driver: bridge

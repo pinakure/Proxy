@@ -1,0 +1,13 @@
+/* Cambia el título de texto por tu logotipo de m4gtracker */
+#kc-header {
+    background-image: url('../img/logo.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    display: block !important;
+    height: 80px !important; /* Ajusta la altura a tu gusto */
+    width: 100% !important;
+}
+#kc-header-wrapper {
+    display: none !important; /* Oculta el texto "Keycloak" original */
+}
