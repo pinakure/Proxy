@@ -13,7 +13,6 @@ PROJECT="$1"
 generate-certificate $1.iskarion
 
 # 3. Ejecutar el reemplazo con sed
-mkdir web  2>/dev/null
 sed "s/\$1/$PROJECT/g" /src/proxy/templates/django.conf.template > /src/proxy/proxy.conf/$1.conf
 
 echo "Archivo $PROJECT.conf generado en /src/proxy/proxy.conf/"
