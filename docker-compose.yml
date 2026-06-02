@@ -68,7 +68,7 @@ services:
     volumes:
       # Postgres guarda sus datos en su ruta dedicada
       - /data/iskarion/postgres_data:/var/lib/postgresql/data
-      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh:ro
+      - ./scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh:ro
     restart: unless-stopped
   #
   # ----------------------------------------------------------------------
