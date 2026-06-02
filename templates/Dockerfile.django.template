@@ -1,0 +1,30 @@
+FROM python:3.12-slim
+
+# Evita que Python escriba archivos .pyc y almacene en búfer de salida
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Crear el usuario y grupo 'melodify'
+RUN groupadd -r $1 && useradd -r -g $1 $1
+
+WORKDIR /src/$1
+
+# Instalar dependencias como root
+COPY requirements.txt /src/$1
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /src/$1/requirements.txt
+
+# Crear estructura necesaria
+RUN mkdir -p \
+    /static/$1 \
+    /media/$1 
+
+# Copiar proyecto directamente con ownership correcto
+COPY --chown=$1:$1 . /src/$1
+
+# Cambiar a usuario no-root
+#USER $1
+
+# Ejecutar migraciones, recopilar estáticos y arrancar Gunicorn
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn $1.wsgi:application --bind 0.0.0.0:8000"]

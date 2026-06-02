@@ -16,6 +16,10 @@ if [ "$(pwd)" = "/src/proxy" ]; then
 fi
 
 # 3. Ejecutar el reemplazo con sed
+mkdir web  2>/dev/null
+sed "s/\$1/$PROJECT/g" /src/proxy/templates/.env.django.template > .env
 sed "s/\$1/$PROJECT/g" /src/proxy/templates/docker-compose.django.template > docker-compose.yml
+sed "s/\$1/$PROJECT/g" /src/proxy/templates/Dockerfile.django.template > web/Dockerfile
+sed "s/\$1/$PROJECT/g" /src/proxy/templates/requirements.txt.django.template > web/requirements.txt
 
 echo "Archivo docker-compose.yml generado con éxito para el proyecto: $PROJECT"
