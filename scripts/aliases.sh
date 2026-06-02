@@ -1,0 +1,12 @@
+
+alias docoup="docker compose up -d --build"
+alias doit="docker exec -it"
+alias dlog="docker logs"
+alias dlogs="docker logs"
+alias cwd="pwd; ls -last"
+alias motd="cat ~/.motd"
+alias proxy-restart="docker restart proxy"
+alias create-django-container="source /src/proxy/scripts/create-django-container.sh"
+alias create-nginx-host="source /src/proxy/scripts/create-nginx-host.sh"
+alias generate-certificate="source /src/proxy/scripts/generate-certificate.sh"
+alias create-mail-user="source /src/proxy/scripts/create-mail-user.sh"
