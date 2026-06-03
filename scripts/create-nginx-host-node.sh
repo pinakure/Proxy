@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # 1. Validar que el parámetro $1 exista
@@ -10,9 +11,9 @@ fi
 PROJECT="$1"
 
 # Crear certificados
-generate-certificate $1.iskarion
+create-certificate $1.iskarion
 
 # 3. Ejecutar el reemplazo con sed
-sed "s/\$1/$PROJECT/g" /src/proxy/templates/django.conf.template > /src/proxy/proxy.conf/$1.conf
+sed "s/\$1/$PROJECT/g" /src/proxy/templates/nginx.conf.node.template > /src/proxy/proxy.conf/$1.conf
 
 echo "Archivo $PROJECT.conf generado en /src/proxy/proxy.conf/"

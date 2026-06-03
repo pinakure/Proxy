@@ -1,0 +1,17 @@
+networks:
+  proxy_sql-network:
+    external: true
+  proxy_primary-network:
+    external: true
+
+services:
+  $1-service:
+    image: nginx:alpine
+    container_name: $1
+    hostname: $1
+    networks:
+      - proxy_sql-network
+      - proxy-primary-network
+    volumes:
+      - /src/$1/web:/usr/share/nginx/html:ro
+    restart: unless-stopped
