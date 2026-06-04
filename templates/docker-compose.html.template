@@ -11,7 +11,7 @@ services:
     hostname: $1
     networks:
       - proxy_sql-network
-      - proxy-primary-network
+      - proxy_primary-network
     volumes:
       - /src/$1/web:/usr/share/nginx/html:ro
     restart: unless-stopped

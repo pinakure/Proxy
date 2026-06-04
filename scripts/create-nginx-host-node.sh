@@ -14,6 +14,6 @@ PROJECT="$1"
 create-certificate $1.iskarion
 
 # 3. Ejecutar el reemplazo con sed
-sed "s/\$1/$PROJECT/g" /src/proxy/templates/nginx.conf.node.template > /src/proxy/proxy.conf/$1.conf
+sed "s/\$1/$PROJECT/g" /src/proxy/templates/nginx.conf.node.template > /src/proxy/proxy.conf.disabled/$1.conf
 
-echo "Archivo $PROJECT.conf generado en /src/proxy/proxy.conf/"
+echo "Archivo $PROJECT.conf generado en /src/proxy/proxy.conf.disabled/"

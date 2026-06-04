@@ -1,3 +1,4 @@
+
 # System Aliases
 alias cwd="pwd; ls -last"
 alias nano="nano --tabstospaces --tabsize=4"
@@ -18,6 +19,9 @@ alias create-nginx-host-html="source /src/proxy/scripts/create-nginx-host-html.s
 alias create-nginx-host-django="source /src/proxy/scripts/create-nginx-host-django.sh"
 alias create-nginx-host-php="source /src/proxy/scripts/create-nginx-host-php.sh"
 alias create-nginx-host-node="source /src/proxy/scripts/create-nginx-host-node.sh"
+alias create-nginx-host-websocket="source /src/proxy/scripts/create-nginx-host-websocket.sh"
 # User & Cert Management
 alias create-certificate="source /src/proxy/scripts/create-certificate.sh"
 alias create-user-mail="source /src/proxy/scripts/create-user-mail.sh"
+alias site-enable="source /src/proxy/scripts/site-enable.sh"
+alias site-disable="source /src/proxy/scripts/site-disable.sh"

@@ -1,28 +1,28 @@
-/* Cambia el título de texto por tu logotipo de m4gtracker */
 #kc-header {
     background-image: url('../img/logo.png') !important;
     background-size: contain !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
     display: block !important;
-    height: 80px !important; /* Ajusta la altura a tu gusto */
+    height: 256px !important; /* Ajusta la altura a tu gusto */
     width: 100% !important;
 }
 #kc-header-wrapper {
     display: none !important; /* Oculta el texto "Keycloak" original */
 }
 body {
-	background-image: linear-gradient(90deg, #000040, #000080) !important;
+	background-image: linear-gradient(45deg, #004000, #408020) !important;
 }
 .card-pf {
 	width: 50%;
 	margin-left: 25%;
 	border-radius: 16px;
-	background-image: linear-gradient(90deg, #f0f0f0, #e0e0e0) !important;
-	box-shadow: 0px 8px 6px #003;
+	background-image: linear-gradient(180deg, #c0f0a0, #80a060) !important;
+	box-shadow: 0px 8px 6px #030;
 }
 .pf-c-button.pf-m-primary{
 	border-radius: 8px;
+	background-color: #008000;
 }
 
 .pf-c-form-control:not(textarea)[aria-invalid=true],
@@ -30,4 +30,20 @@ body {
 	border-radius: 8px;
 	background-image: linear-gradient(90deg, #002000, #000800) !important;
 	color: #00a000 !important;
+}
+
+input::placeholder,
+.pf-c-form-control,
+.pf-c-input-group,
+.pf-c-button.pf-m-control,
+input {
+	border: none !important;
+	background-color: #003000 !important;
+	color: #80ff80;
+	outline: none !important;
+	border-radius: 8px !important;
+}
+
+#kc-form-login > div:nth-child(2) > div > button {
+	display: none;
 }
