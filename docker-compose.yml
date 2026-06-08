@@ -136,6 +136,10 @@ services:
       # Montar /static (monta todos los /static/XXXXX/ de cada django)
       - /static:/static
       # Montar /media/XXXXX/ de cada django
+      - /src/adam/web/media:/media/adam
+      - /src/adam/web/static:/static/adam
+      - /src//cpanel/media:/media/cpanel
+      - /src/cpanel/web/static:/static/cpanel
       - /src/melodify/web/media:/media/melodify
       - /src/m4gtracker/web/media:/media/m4gtracker
       - /src/scenia/web/media:/media/scenia
@@ -147,6 +151,7 @@ services:
       - /src/cells/web:/var/www/html/cells
       - /src/snake/web:/var/www/html/snake
       - /src/pacman/web:/var/www/html/pacman
+      - /src/blackbox/server:/var/www/html/blackbox
       - /src/trickynoid/front:/var/www/html/trickynoid
       - /src/trickynoid/back:/src/trickynoid
     depends_on:
