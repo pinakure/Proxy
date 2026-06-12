@@ -111,7 +111,7 @@ services:
       - ./scripts/certbot-entrypoint.sh:/src/certbot-entrypoint.sh:ro
       - ./scripts/certbot-generate.sh:/src/certbot-generate.sh:ro
       - ./scripts/certbot-autorenewal.sh:/src/certbot-autorenewal.sh:ro
-    #entrypoint: "/bin/sh -c 'source /src/certbot-entrypoint.sh'"
+    entrypoint: "/bin/sh -c 'source /src/certbot-entrypoint.sh'"
   #
   # ----------------------------------------------------------------------
   # Proxy

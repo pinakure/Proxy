@@ -25,3 +25,6 @@ alias create-certificate="source /src/proxy/scripts/create-certificate.sh"
 alias create-user-mail="source /src/proxy/scripts/create-user-mail.sh"
 alias site-enable="source /src/proxy/scripts/site-enable.sh"
 alias site-disable="source /src/proxy/scripts/site-disable.sh"
+# Certbot Autorenewal Mode Handlers
+alias enable-certbot-autorenewal="source /src/proxy/scripts/enable-certbot-autorenewal.sh"
+alias disable-certbot-autorenewal="source /src/proxy/scripts/disable-certbot-autorenewal.sh"

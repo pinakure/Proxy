@@ -18,6 +18,8 @@ services:
       - /media/$1:/media/$1
       - /var/log:/var/log
     environment:
+      SITE_NAME: ${SITE_NAME}
+      SITE_HOST: ${SITE_HOST}
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
