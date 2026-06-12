@@ -1,0 +1,93 @@
+:root {
+	--color-bg-primary		:#888;
+	--color-bg-secondary	:#000;
+	--color-input-primary	:#0008;
+	--color-input-secondary	:#2228;
+	--color-input-text	    :#fff;
+	--color-input-caption   :#ccc;
+	--color-fg-primary		:#0f0;
+	--color-fg-secondary	:#080;
+	--button-bg				:#229;
+	--button-fg				:#dcf;
+	--logo-width			: 512px;
+	--logo-height  			: 512px;
+	--logo-container-height	: 382px;
+}
+* {
+	box-shadow			: none !important;
+	outline				: none !important;
+	border				: none !important;
+	border-radius		: 8px !important;
+}
+html {
+	height				: 100%;
+	width				: 100%;
+}
+body {
+	border-radius		: 0 !important;
+	height				: 100%;
+	width				: 100%;
+	overflow			: hidden;
+}
+/* Oculta elementos */
+#kc-form-login > div:nth-child(2) > div > button,
+#kc-page-title ,
+#kc-header-wrapper {
+    display				: none !important;
+}
+#kc-header {
+    background-image	: url('../img/logo.png') !important;
+    background-repeat	: no-repeat !important;
+    background-position	: center !important;
+	background-size		: var(--logo-width) var(--logo-height);
+    display				: block !important;
+    height				: var(--logo-container-height) !important; /* Ajusta la altura a tu gusto */
+    width				: 100% !important;
+}
+/* Login Card Backdrop */
+#kc-form-login > div:nth-child(2) > div{
+	background			: transparent;
+}
+body {
+	background-image	: linear-gradient(0deg, var(--color-bg-primary), var(--color-bg-secondary)) !important;
+}
+.card-pf div {
+	text-align			: center;
+	color 				: var(--color-input-caption) !important;
+	font-weight			: 800 ;
+	text-shadow			: 0px -1px 0px #0008 !important;
+}
+.card-pf {
+	padding				: none;
+	border 				: none;
+	background 			: transparent;
+	width				: 50%;
+	margin-left			: 25%;
+}
+.pf-c-button.pf-m-primary{
+	color 				: var(--button-fg);
+	background-color 	: var(--button-bg);
+}
+.pf-c-button.pf-m-primary:hover{
+	filter				: brightness(1.2);
+}
+
+.pf-c-form-control:not(textarea),
+.pf-c-form-control[aria-invalid=false],
+.c-form-control,
+#username,
+#password,
+.pf-c-form-control {
+	padding-right 		: 0px !important;
+	box-shadow			: 2px 2px 2px #0008 inset !important;
+	text-shadow			: 0px -2px 0px #0000 !important;
+	background-image	: linear-gradient(0deg, var(--color-input-primary), var(--color-input-primary), var(--color-input-secondary)) !important;
+	color				: var(--color-input-text) !important;
+}
+
+
+#password[aria-invalid=true],
+#username[aria-invalid=true]{
+	background-image	: none !important;
+	color				: #000 !important;
+}
