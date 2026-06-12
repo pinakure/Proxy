@@ -5,6 +5,7 @@ alias nano="nano --tabstospaces --tabsize=4"
 alias motd="cat ~/.motd"
 # Docker ShortCuts
 alias proxy-restart="docker restart proxy"
+alias monitor-proxy="clear; docker ps | grep CONTAINER ; docker ps | grep certbot; docker ps | grep proxy; docker ps | grep mail ; docker ps | grep database ; docker ps | grep authentication"
 alias docoup="docker compose up -d --build"
 alias dlogs="docker logs"
 alias doit="docker exec -it"
