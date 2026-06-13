@@ -8,8 +8,7 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
     ssl_ciphers HIGH:!aNULL:!MD5;
-
-    # Proxy inverso para solicitudes dinámicas conectando con tu upstream
+    include error.conf;    
     location / {
         proxy_pass http://$1-service:80;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

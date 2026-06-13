@@ -131,8 +131,9 @@ services:
       # Montar proxy.conf para que encuentre los sites
       - /src/proxy/proxy.conf:/etc/nginx/proxy.conf
       - /src/proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /src/proxy/error.conf:/etc/nginx/error.conf:ro
       # Custom Error Pages
-      - /src/proxy/errors:/usr/share/nginx/html
+      - /src/proxy/errors:/var/www/html/errors
       # Montar volumenes de certbot para que encuentre los certificados
       - /cert/etc:/etc/letsencrypt
       - /cert/var:/var/lib/letsencrypt
@@ -141,13 +142,9 @@ services:
       - /static:/static
       # Montar /media/XXXXX/ de cada django
       - /src/cerebelus/web/media:/media/cerebelus
-      - /src/cerebelus/web/static:/static/cerebelus
       - /src/sixdegrees/web/media:/media/sixdegrees
-      - /src/sixdegrees/web/static:/static/sixdegrees
       - /src/adam/web/media:/media/adam
-      - /src/adam/web/static:/static/adam
       - /src/cpanel/web/media:/media/cpanel
-      - /src/cpanel/web/static:/static/cpanel
       - /src/melodify/web/media:/media/melodify
       - /src/m4gtracker/web/media:/media/m4gtracker
       - /src/scenia/web/media:/media/scenia
