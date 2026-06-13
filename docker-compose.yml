@@ -111,7 +111,7 @@ services:
       - ./scripts/certbot-entrypoint.sh:/src/certbot-entrypoint.sh:ro
       - ./scripts/certbot-generate.sh:/src/certbot-generate.sh:ro
       - ./scripts/certbot-autorenewal.sh:/src/certbot-autorenewal.sh:ro
-    entrypoint: "/bin/sh -c 'source /src/certbot-autorenewal.sh'"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done'"
   #
   # ----------------------------------------------------------------------
   # Proxy
@@ -140,9 +140,13 @@ services:
       # Montar /static (monta todos los /static/XXXXX/ de cada django)
       - /static:/static
       # Montar /media/XXXXX/ de cada django
+      - /src/cerebelus/web/media:/media/cerebelus
+      - /src/cerebelus/web/static:/static/cerebelus
+      - /src/sixdegrees/web/media:/media/sixdegrees
+      - /src/sixdegrees/web/static:/static/sixdegrees
       - /src/adam/web/media:/media/adam
       - /src/adam/web/static:/static/adam
-      - /src//cpanel/media:/media/cpanel
+      - /src/cpanel/web/media:/media/cpanel
       - /src/cpanel/web/static:/static/cpanel
       - /src/melodify/web/media:/media/melodify
       - /src/m4gtracker/web/media:/media/m4gtracker
@@ -152,6 +156,8 @@ services:
       - /src/trickynoid/back/media:/media/trickynoid
       - /src/trickynoid/back/static:/static/trickynoid
       # These are needed for each PHP project
+      - /src/soundpanel/web:/var/www/html/soundpanel
+      - /src/gallery/web:/var/www/html/gallery
       - /src/stuff/web:/var/www/html/stuff
       - /src/cells/web:/var/www/html/cells
       - /src/snake/web:/var/www/html/snake

@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # 1. Validar que el parámetro $1 exista

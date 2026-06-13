@@ -16,3 +16,4 @@ create-certificate $1.iskarion
 sed "s/\$1/$PROJECT/g" /src/proxy/templates/nginx.conf.django.template > /src/proxy/proxy.conf.disabled/$1.conf
 
 echo "Archivo $PROJECT.conf generado en /src/proxy/proxy.conf.disabled/"
+
